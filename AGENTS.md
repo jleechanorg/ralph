@@ -1,47 +1,47 @@
-# Ralph Agent Instructions
+# Ralph Benchmark Agent Instructions
 
-## Overview
+## Purpose
 
-Ralph is an autonomous AI agent loop that runs AI coding tools (Amp or Claude Code) repeatedly until all PRD items are complete. Each iteration is a fresh instance with clean context.
+This repository is used to benchmark orchestrator workflows, with Ralph as the local baseline and
+comparison targets including:
 
-## Commands
+- `agent-orchestrator` (`/Users/jleechan/projects_reference/agent-orchestrator`)
+- `gastown` (`/Users/jleechan/projects_reference/gastown`)
+
+## Scope
+
+- Keep changes focused on benchmark harness/docs unless explicitly asked to change runtime logic.
+- Treat `ralph.sh` as the baseline orchestrator loop.
+- Keep benchmark runs reproducible with explicit commands and environment assumptions.
+
+## Common Commands
 
 ```bash
-# Run the flowchart dev server
-cd flowchart && npm run dev
+# Ralph baseline
+./ralph.sh --tool claude 3
 
-# Build the flowchart
-cd flowchart && npm run build
+# Optional: Amp baseline
+./ralph.sh --tool amp 3
 
-# Run Ralph with Amp (default)
-./ralph.sh [max_iterations]
-
-# Run Ralph with Claude Code
-./ralph.sh --tool claude [max_iterations]
+# Flowchart docs site
+cd flowchart && npm install && npm run dev
 ```
 
-## Key Files
+## Repository Facts
 
-- `ralph.sh` - The bash loop that spawns fresh AI instances (supports `--tool amp` or `--tool claude`)
-- `prompt.md` - Instructions given to each AMP instance
--  `CLAUDE.md` - Instructions given to each Claude Code instance
-- `prd.json.example` - Example PRD format
-- `flowchart/` - Interactive React Flow diagram explaining how Ralph works
+- `ralph.sh`: baseline autonomous loop.
+- `CLAUDE.md`: worker-agent operating contract for Ralph iterations.
+- `prd.json.example`: canonical benchmark scenario shape.
+- `prompt.md`: Amp-side prompt template.
+- `flowchart/`: visual walkthrough of the loop.
 
-## Flowchart
+## Remote Configuration
 
-The `flowchart/` directory contains an interactive visualization built with React Flow. It's designed for presentations - click through to reveal each step with animations.
+If GitHub returns `Repository not found` for `jleechanorg/ralph`, use the upstream URL:
 
-To run locally:
 ```bash
-cd flowchart
-npm install
-npm run dev
+git remote set-url origin https://github.com/snarktank/ralph.git
+git remote set-url --push origin https://github.com/snarktank/ralph.git
 ```
 
-## Patterns
-
-- Each iteration spawns a fresh AI instance (Amp or Claude Code) with clean context
-- Memory persists via git history, `progress.txt`, and `prd.json`
-- Stories should be small enough to complete in one context window
-- Always update AGENTS.md with discovered patterns for future iterations
+If you later create a personal fork, set `origin` to the fork and keep `upstream` on snarktank.
